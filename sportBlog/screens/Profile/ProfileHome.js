@@ -4,8 +4,11 @@ import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 
-const ProfilHome = ({navigation}) => {
+const ProfilHome = ({ navigation, route }) => {
     
+    //const {  steps } = route.params;
+    //console.log('steps==>', route.params.name);
+
     return (
         <View style={{ flex: 1, alignItems: 'center', marginTop: 30, position: 'relative' }}>
 
@@ -13,7 +16,7 @@ const ProfilHome = ({navigation}) => {
 
             
         </View>
-    )
+    );
 };
 
 export default ProfilHome;
