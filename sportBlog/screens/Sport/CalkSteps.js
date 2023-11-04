@@ -5,7 +5,9 @@ import {TouchableOpacity, Switch, View, Text, TextInput, Button } from 'react-na
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const CalkSteps = ({navigation, name , rollUp,}) => {
+import { uid } from 'uid';
+
+const CalkSteps = ({navigation, name , rollUp, handleAddInfo}) => {
 
     //const { name } = route.params;
     //console.log('name==>', )
@@ -17,7 +19,7 @@ const CalkSteps = ({navigation, name , rollUp,}) => {
     //console.log(isEnabled);
     const [step, setStep] = useState('');
     const [calkResult, setCalkResult] = useState('');
-    console.log('calkResult==>',calkResult);
+    //console.log('calkResult==>',calkResult);
 
     useEffect(() => {
         calculation()
@@ -34,6 +36,16 @@ const CalkSteps = ({navigation, name , rollUp,}) => {
             let result = (parseInt(step) * man).toFixed(2);
             setCalkResult(result);
         }
+    };
+
+    const handleSabmit = () => {
+        const newInfo = {
+            id: uid(),
+            info: `I took ${step} steps and after walking ${calkResult} m`,
+            
+        };
+        handleAddInfo(newInfo);
+        setStep('');
     };
 
     return (
@@ -75,6 +87,10 @@ const CalkSteps = ({navigation, name , rollUp,}) => {
                 </View>
            
                 <View>
+                    <Text style={{ color: '#fff', fontSize: 25, }}>Caledar</Text>
+                </View>
+
+                <View>
                     {isEnabled ? (
                         <Text style={{ color: '#fff', fontSize: 25, marginTop: 20, marginBottom: 10 }}>Steps :</Text>
                     ) : (
@@ -83,6 +99,7 @@ const CalkSteps = ({navigation, name , rollUp,}) => {
                     
                     <TextInput
                         style={{
+                            paddingLeft: 10,
                             width: 100, height: 40, borderWidth: 1, borderRadius: 10,
                             borderColor: isEnabled ? '#fff' : '#fff',
                             color: isEnabled ? '#fff' : '#fff',
@@ -107,7 +124,7 @@ const CalkSteps = ({navigation, name , rollUp,}) => {
                         <Text style={{ fontSize: 30, color: 'green', marginTop: 10 }}>{calkResult} metr's</Text>
                             
                         <TouchableOpacity
-                            onPress={() =>{}}
+                            onPress={handleSabmit}
                             style={{marginBottom: 20,alignItems: 'center',justifyContent: 'center',borderWidth: 1,borderColor:'#fff', borderRadius: 25,width: 130,height: 40}}
                         >
                             <Text style={{ color: '#fff', fontSize: 20 }}>SAVE</Text>
@@ -118,15 +135,15 @@ const CalkSteps = ({navigation, name , rollUp,}) => {
                 )}
 
                 <TouchableOpacity
-                    style={{alignItems: 'center',justifyContent: 'center',borderWidth: 1,borderColor:'#fff', borderRadius: 25,width: 130,height: 40}}
+                    style={{}}
                     onPress={() => rollUp()}
                 >
-                    <Text style={{color: '#fff', fontSize: 20}}>Roll Up</Text>
+                    <AntDesign name='arrowup' style={{ color: '#fff', fontSize: 25 , marginLeft: 8}} />
                 </TouchableOpacity>
                 
                 
             </View>
-            {/**
+            {/** alignItems: 'center',justifyContent: 'center',borderWidth: 1,borderColor:'#fff', borderRadius: 25,width: 130,height: 40
             <TouchableOpacity
                 style={{ position: 'absolute', bottom: 10, right: 10, }}
                 onPress={() => navigation.navigate('SportHome')}

@@ -33,7 +33,7 @@ const CalkCalorii = ({navigation, name , rollUp}) => {
     }
 
     return (
-        <View style={{ flex: 1, marginTop: 20, position: 'relative', backgroundColor: '#000', borderColor: '#fff', borderWidth: 2, borderRadius: 10, padding: 10 }}>
+        <View style={{ flex: 1, marginTop: 20,marginBottom: 30, position: 'relative', backgroundColor: '#000', borderColor: '#fff', borderWidth: 2, borderRadius: 10, padding: 10 }}>
            
             {isEnabled ? (
                 <View style={{ marginBottom: 20 }}>
@@ -113,10 +113,10 @@ const CalkCalorii = ({navigation, name , rollUp}) => {
                 )}
 
                 <TouchableOpacity
-                    style={{ marginTop: 20,alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#fff', borderRadius: 25, width: 130, height: 40 }}
+                    style={{ marginTop: 10 }}
                     onPress={() => rollUp()}
                 >
-                    <Text style={{ color: '#fff', fontSize: 20 }}>Roll Up</Text>
+                    <AntDesign name='arrowup' style={{ color: '#fff', fontSize: 25 , marginLeft: 8}} />
                 </TouchableOpacity>
             </View>
                  

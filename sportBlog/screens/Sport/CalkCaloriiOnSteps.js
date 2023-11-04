@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from "react";
 import {TextInput,Switch, View, Text ,TouchableOpacity, ImageBackground,StyleSheet} from "react-native";
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const CalkCaloriiOnSteps = ({ name , rollUp}) => {
 
@@ -137,10 +137,10 @@ const CalkCaloriiOnSteps = ({ name , rollUp}) => {
             </View>
 
             <TouchableOpacity
-                    style={{ marginTop: 20,alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#fff', borderRadius: 25, width: 130, height: 40 }}
+                    style={{ marginTop: 10 }}
                     onPress={() => rollUp()}
                 >
-                    <Text style={{ color: '#fff', fontSize: 20 }}>Roll Up</Text>
+                    <AntDesign name='arrowup' style={{ color: '#fff', fontSize: 25 , marginLeft: 8}} />
                 </TouchableOpacity>
         </View>
     );
