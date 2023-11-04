@@ -3,7 +3,11 @@ import {TextInput,Switch, View, Text ,TouchableOpacity, ImageBackground,StyleShe
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const CalkCaloriiOnSteps = ({ name , rollUp}) => {
+import  { Calendar ,  LocaleConfig }  from  'react-native-calendars' ;
+
+import { uid } from 'uid';
+
+const CalkCaloriiOnSteps = ({ name , rollUp, handleAddInfo}) => {
 
     const moderateEffort = 0.14;
     const vigorousEffort = 0.0665;
@@ -12,7 +16,8 @@ const CalkCaloriiOnSteps = ({ name , rollUp}) => {
     const [massa, setMassa] = useState('');
     const [time, setTime] = useState('');
     const [calkResult, setCalkResult] = useState('');
-    console.log('calkResult==>', calkResult);
+    //console.log('calkResult==>', calkResult);
+    const [selectedData, setSelectedData] = useState('');
 
     useEffect(() => {
         calculation()
@@ -25,11 +30,23 @@ const CalkCaloriiOnSteps = ({ name , rollUp}) => {
             let result = (moderateEffort * massa * time).toFixed(2);
             setCalkResult(result)
         }
-        else { 
+        else {
             let result = (vigorousEffort * massa * time).toFixed(2);
             setCalkResult(result)
         }
-    }
+    };
+
+    const handleSabmit = () => {
+        const newInfo = {
+            id: uid(),
+            info: `I did push-ups for ${time} minute and burned ${calkResult} calories`,
+            data: selectedData,
+        };
+        handleAddInfo(newInfo);
+
+        setTime('');
+        setMassa('');
+    };
 
     return (
         <View style={{ flex: 1, marginTop: 20, position: 'relative', backgroundColor: '#000', borderColor: '#fff', borderWidth: 2, borderRadius: 10, padding: 10 }}>
@@ -65,6 +82,16 @@ const CalkCaloriiOnSteps = ({ name , rollUp}) => {
                         <Text style={{color: '#fff', marginTop: 10, fontSize: 18 }}>vigorous Effort</Text>
                     )}
                 </View>
+
+                {/**Calendar */}
+                <Calendar
+                    onDayPress={day => {
+                        setSelectedData(day.dateString);
+                    }}
+                    markedDates={{
+                        [selectedData]: { selectedData: true, disableTouchEvent: true, selectedDotColor: 'orange' }
+                    }}
+                />
 
                 {isEnabled ? (
 <View>
@@ -125,7 +152,7 @@ const CalkCaloriiOnSteps = ({ name , rollUp}) => {
                             <Text style={{ fontSize: 40, color: 'green' }}>{calkResult} kkal</Text>
 
                             <TouchableOpacity
-                            onPress={() => { }}
+                            onPress={handleSabmit}
                             style={{  alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#fff', borderRadius: 25, width: 130, height: 40 }}
                         >
                             <Text style={{ color: '#fff', fontSize: 20 }}>SAVE</Text>

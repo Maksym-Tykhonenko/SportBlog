@@ -1,13 +1,14 @@
 import React, { useState,useEffect } from 'react';
 import {TouchableOpacity, Switch, View, Text, TextInput, Button } from 'react-native';
 
+import  { Calendar ,  LocaleConfig }  from  'react-native-calendars' ;
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { uid } from 'uid';
 
-const CalkSteps = ({navigation, name , rollUp, handleAddInfo}) => {
+const CalkSteps = ({ navigation, name, rollUp, handleAddInfo }) => {
 
     //const { name } = route.params;
     //console.log('name==>', )
@@ -16,10 +17,11 @@ const CalkSteps = ({navigation, name , rollUp, handleAddInfo}) => {
     const woman = 0.61;
     
     const [isEnabled, setIsEnabled] = useState(false);
-    //console.log(isEnabled);
     const [step, setStep] = useState('');
     const [calkResult, setCalkResult] = useState('');
     //console.log('calkResult==>',calkResult);
+    const [selectedData, setSelectedData] = useState('');
+    //console.log('selected==>', selectedData);
 
     useEffect(() => {
         calculation()
@@ -42,14 +44,15 @@ const CalkSteps = ({navigation, name , rollUp, handleAddInfo}) => {
         const newInfo = {
             id: uid(),
             info: `I took ${step} steps and after walking ${calkResult} m`,
-            
+            data: selectedData,
         };
         handleAddInfo(newInfo);
+        
         setStep('');
     };
 
     return (
-        <View style={{ flex: 1, marginTop: 20,marginBottom:20,  position: 'relative' , backgroundColor: '#000', borderColor: '#fff', borderWidth: 2, borderRadius: 10, padding:10}}>
+        <View style={{ flex: 1, marginTop: 20, marginBottom: 20, position: 'relative', backgroundColor: '#000', borderColor: '#fff', borderWidth: 2, borderRadius: 10, padding: 10 }}>
 
             {isEnabled ? (
                 <View style={{ marginBottom: 20 }}>
@@ -57,7 +60,7 @@ const CalkSteps = ({navigation, name , rollUp, handleAddInfo}) => {
                 </View>
             ) : (
                 <View style={{ marginBottom: 20 }}>
-                        <Text style={{ fontSize: 30, color: '#fff', fontWeight: 'bold' }}>{name }</Text>
+                    <Text style={{ fontSize: 30, color: '#fff', fontWeight: 'bold' }}>{name}</Text>
                 </View>
             )}
             
@@ -72,7 +75,7 @@ const CalkSteps = ({navigation, name , rollUp, handleAddInfo}) => {
                     )}
                     
                     <Switch
-                        style={{ width: 100 ,borderWidth: 1, borderColor: '#fff',borderRadius: 15,width: 52}}
+                        style={{ width: 100, borderWidth: 1, borderColor: '#fff', borderRadius: 15, width: 52 }}
                         trackColor={{ false: '#81b0ff', true: '#767577' }}
                         thumbColor={'#f5dd4b'}
                         //ios_backgroundColor="#3e3e3e" !isEnabled ? '#f4f3f4' :
@@ -86,9 +89,15 @@ const CalkSteps = ({navigation, name , rollUp, handleAddInfo}) => {
                     )}
                 </View>
            
-                <View>
-                    <Text style={{ color: '#fff', fontSize: 25, }}>Caledar</Text>
-                </View>
+                {/**Calendar */}
+                <Calendar
+                    onDayPress={day => {
+                        setSelectedData(day.dateString);
+                    }}
+                    markedDates={{
+                        [selectedData]: { selectedData: true, disableTouchEvent: true, selectedDotColor: 'orange' }
+                    }}
+                />
 
                 <View>
                     {isEnabled ? (
@@ -125,7 +134,7 @@ const CalkSteps = ({navigation, name , rollUp, handleAddInfo}) => {
                             
                         <TouchableOpacity
                             onPress={handleSabmit}
-                            style={{marginBottom: 20,alignItems: 'center',justifyContent: 'center',borderWidth: 1,borderColor:'#fff', borderRadius: 25,width: 130,height: 40}}
+                            style={{ marginBottom: 20, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#fff', borderRadius: 25, width: 130, height: 40 }}
                         >
                             <Text style={{ color: '#fff', fontSize: 20 }}>SAVE</Text>
                         </TouchableOpacity>
@@ -138,7 +147,7 @@ const CalkSteps = ({navigation, name , rollUp, handleAddInfo}) => {
                     style={{}}
                     onPress={() => rollUp()}
                 >
-                    <AntDesign name='arrowup' style={{ color: '#fff', fontSize: 25 , marginLeft: 8}} />
+                    <AntDesign name='arrowup' style={{ color: '#fff', fontSize: 25, marginLeft: 8 }} />
                 </TouchableOpacity>
                 
                 
@@ -155,4 +164,4 @@ const CalkSteps = ({navigation, name , rollUp, handleAddInfo}) => {
     );
 };
 
-export default CalkSteps
+export default CalkSteps;

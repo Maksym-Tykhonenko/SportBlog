@@ -4,7 +4,11 @@ import {TextInput,Switch, View, Text ,TouchableOpacity, ImageBackground,StyleShe
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const CalkCalorii = ({navigation, name , rollUp}) => {
+import  { Calendar ,  LocaleConfig }  from  'react-native-calendars' ;
+
+import { uid } from 'uid';
+
+const CalkCalorii = ({ navigation, name, rollUp, handleAddInfo }) => {
     
     //чол 65кал 1000кроків
     //жін 52кал 1000кроків
@@ -14,6 +18,7 @@ const CalkCalorii = ({navigation, name , rollUp}) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const [step, setStep] = useState('');
     const [calkResult, setCalkResult] = useState('');
+    const [selectedData, setSelectedData] = useState('');
 
     useEffect(() => {
         calculation()
@@ -26,14 +31,25 @@ const CalkCalorii = ({navigation, name , rollUp}) => {
             let result = (step * woman).toFixed(2);
             setCalkResult(result);
         }
-        else { 
+        else {
             let result = (step * man).toFixed(2);
             setCalkResult(result);
         }
-    }
+    };
+
+    const handleSabmit = () => {
+        const newInfo = {
+            id: uid(),
+            info: `I took ${step} steps and after walking burned ${calkResult} calories.`,
+            data: selectedData,
+        };
+        console.log('newInfo=>', newInfo)
+        handleAddInfo(newInfo);
+        setStep('');
+    };
 
     return (
-        <View style={{ flex: 1, marginTop: 20,marginBottom: 30, position: 'relative', backgroundColor: '#000', borderColor: '#fff', borderWidth: 2, borderRadius: 10, padding: 10 }}>
+        <View style={{ flex: 1, marginTop: 20, marginBottom: 30, position: 'relative', backgroundColor: '#000', borderColor: '#fff', borderWidth: 2, borderRadius: 10, padding: 10 }}>
            
             {isEnabled ? (
                 <View style={{ marginBottom: 20 }}>
@@ -70,6 +86,16 @@ const CalkCalorii = ({navigation, name , rollUp}) => {
                     
                 </View>
 
+                {/**Calendar */}
+                <Calendar
+                    onDayPress={day => {
+                        setSelectedData(day.dateString);
+                    }}
+                    markedDates={{
+                        [selectedData]: { selectedData: true, disableTouchEvent: true, selectedDotColor: 'orange' }
+                    }}
+                />
+
                 <View>
                     {isEnabled ? (
                         <Text style={{ color: '#fff', fontSize: 25, marginTop: 20, marginBottom: 10 }}>Steps :</Text>
@@ -78,7 +104,7 @@ const CalkCalorii = ({navigation, name , rollUp}) => {
                     )}
                     
                     <TextInput
-                        style={{
+                        style={{paddingLeft: 10,
                             width: 100, height: 40, borderWidth: 1, borderRadius: 10,
                             borderColor: isEnabled ? '#fff' : '#fff',
                             color: isEnabled ? '#fff' : '#fff',
@@ -103,8 +129,8 @@ const CalkCalorii = ({navigation, name , rollUp}) => {
                         <Text style={{ fontSize: 40, color: 'green' }}>{calkResult} kkal</Text>
                     
                         <TouchableOpacity
-                            onPress={() => {}}
-                            style={{  alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#fff', borderRadius: 25, width: 130, height: 40 }}
+                            onPress={handleSabmit}
+                            style={{ alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#fff', borderRadius: 25, width: 130, height: 40 }}
                         >
                             <Text style={{ color: '#fff', fontSize: 20 }}>SAVE</Text>
                         </TouchableOpacity>
@@ -116,7 +142,7 @@ const CalkCalorii = ({navigation, name , rollUp}) => {
                     style={{ marginTop: 10 }}
                     onPress={() => rollUp()}
                 >
-                    <AntDesign name='arrowup' style={{ color: '#fff', fontSize: 25 , marginLeft: 8}} />
+                    <AntDesign name='arrowup' style={{ color: '#fff', fontSize: 25, marginLeft: 8 }} />
                 </TouchableOpacity>
             </View>
                  

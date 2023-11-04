@@ -2,6 +2,7 @@ import React,{useEffect, useState} from "react";
 import {SafeAreaView, View, Text ,StyleSheet,TouchableOpacity, Linking,Dimensions, Image} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
+import { uid } from 'uid';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -63,7 +64,7 @@ export const getImgs = (query, page) => {
                  {photo.map((item) => {
                 return (
                     <Image
-                        key={item.id}
+                        key={uid()}
                         style={{...styles,width: imageWidth, height: imageWidth }}
                         source={{ uri: item.previewURL }} />
                 )

@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import {ScrollView, View,ImageBackground,StyleSheet, Text,TouchableOpacity, Alert, Modal, TextInput, Image } from "react-native";
+import {ScrollView, View,ImageBackground,StyleSheet, Text,TouchableOpacity, Alert, Modal, TextInput, Image, ScrollViewComponent } from "react-native";
 
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
@@ -104,7 +104,7 @@ const SportHome = ({ navigation }) => {
                                 <AntDesign name='arrowdown' style={{ color: '#fff', fontSize: 25 , position: 'absolute',bottom: 5, left: 20}} />
                             </TouchableOpacity>
                         ) : (
-                            <CalkCalorii name={secedBt} rollUp={showSecodCalk} />
+                            <CalkCalorii name={secedBt} rollUp={showSecodCalk} handleAddInfo={ handleAddInfo} />
                         )}
 
                         {showThordBt ? (
@@ -115,7 +115,7 @@ const SportHome = ({ navigation }) => {
                                 <AntDesign name='arrowdown' style={{ color: '#fff', fontSize: 25 , position: 'absolute',bottom: 5, left: 20}} />
                             </TouchableOpacity>
                         ) : (
-                            <CalkCaloriiOnSteps name={firdtBt} rollUp={showThordCalk} />
+                            <CalkCaloriiOnSteps name={firdtBt} rollUp={showThordCalk}  handleAddInfo={ handleAddInfo}/>
                         )}
 
                     </ScrollView>
@@ -134,7 +134,7 @@ const SportHome = ({ navigation }) => {
                     transparent={true}
                     visible={isModalVisible}
                 >
-                    <View style={{ position: 'relative', flex: 1,paddingTop: 30, backgroundColor: '#000' }}>
+                    <View style={{ position: 'relative', flex: 1,paddingTop: 30, backgroundColor: '#000', paddingHorizontal:10 }}>
                         
                         {!username ? (
                         <View style={{marginBottom: 40}}>
@@ -165,7 +165,7 @@ const SportHome = ({ navigation }) => {
                                 <Text style={{ color: '#fff' }}>Add Photo</Text>
                             </TouchableOpacity>) : (
                                     <Image
-                                        style={{width: 200, height: 200, borderRadius: 10}}
+                                        style={{width: 150, height: 150, borderRadius: 10}}
                                         source={{ uri: photo }} />
                             )}
                             
@@ -175,15 +175,16 @@ const SportHome = ({ navigation }) => {
                             <View></View>
                         ) : (
                                <View>
-                            
+                            <ScrollView>
                                  {info.map((item) => {
                                 return (
                                     <View key={item.id}>
-                                        <Text style={{color: '#fff'}}>{item.info}</Text>
+                                        <Text style={{color: '#808080', fontSize: 12, }}>{item.data}</Text>
+                                        <Text style={{color: '#fff', fontSize: 18, marginBottom: 10}}>{item.info}</Text>
                                     </View>
                                 )
                             })}
-                           
+                           </ScrollView>
                            
                         </View> 
                         )}
