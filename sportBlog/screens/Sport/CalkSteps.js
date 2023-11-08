@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react';
-import {TouchableOpacity, Switch, View, Text, TextInput, Button } from 'react-native';
+import {TouchableOpacity, Switch, View, Text, TextInput, Button, KeyboardAvoidingView, Platform } from 'react-native';
 
 import  { Calendar ,  LocaleConfig }  from  'react-native-calendars' ;
 
@@ -21,7 +21,7 @@ const CalkSteps = ({ navigation, name, rollUp, handleAddInfo }) => {
     const [calkResult, setCalkResult] = useState('');
     //console.log('calkResult==>',calkResult);
     const [selectedData, setSelectedData] = useState('');
-    //console.log('selected==>', selectedData);
+    console.log('Platform==>', Platform.OS);
 
     useEffect(() => {
         calculation()
@@ -54,15 +54,15 @@ const CalkSteps = ({ navigation, name, rollUp, handleAddInfo }) => {
     return (
         <View style={{ flex: 1, marginTop: 20, marginBottom: 20, position: 'relative', backgroundColor: '#000', borderColor: '#fff', borderWidth: 2, borderRadius: 10, padding: 10 }}>
 
-            {isEnabled ? (
+            <KeyboardAvoidingView
+                style={{flex:1}}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            >
+           
                 <View style={{ marginBottom: 20 }}>
                     <Text style={{ fontSize: 30, color: '#fff', fontWeight: 'bold' }}>{name}</Text>
                 </View>
-            ) : (
-                <View style={{ marginBottom: 20 }}>
-                    <Text style={{ fontSize: 30, color: '#fff', fontWeight: 'bold' }}>{name}</Text>
-                </View>
-            )}
+          
             
 
             <View style={{ flex: 1 }}>
@@ -100,13 +100,10 @@ const CalkSteps = ({ navigation, name, rollUp, handleAddInfo }) => {
                 />
 
                 <View>
-                    {isEnabled ? (
-                        <Text style={{ color: '#fff', fontSize: 25, marginTop: 20, marginBottom: 10 }}>Steps :</Text>
-                    ) : (
-                        <Text style={{ color: '#fff', fontSize: 25, marginTop: 20, marginBottom: 10 }}>Steps :</Text>
-                    )}
                     
-                    <TextInput
+                        <Text style={{ color: '#fff', fontSize: 25, marginTop: 20, marginBottom: 10 }}>Steps :</Text>
+                 
+                        <TextInput
                         style={{
                             paddingLeft: 10,
                             width: 100, height: 40, borderWidth: 1, borderRadius: 10,
@@ -118,6 +115,7 @@ const CalkSteps = ({ navigation, name, rollUp, handleAddInfo }) => {
                         onChangeText={setStep}
                         keyboardType="numeric"
                     />
+                   
                 </View>
 
                 {step === '' ? (
@@ -152,13 +150,7 @@ const CalkSteps = ({ navigation, name, rollUp, handleAddInfo }) => {
                 
                 
             </View>
-            {/** alignItems: 'center',justifyContent: 'center',borderWidth: 1,borderColor:'#fff', borderRadius: 25,width: 130,height: 40
-            <TouchableOpacity
-                style={{ position: 'absolute', bottom: 10, right: 10, }}
-                onPress={() => navigation.navigate('SportHome')}
-            >
-                <Ionicons name='arrow-undo-sharp' style={{ color: '#000', fontSize: 35 }} />
-            </TouchableOpacity> */}
+            </KeyboardAvoidingView>
             
         </View>
     );

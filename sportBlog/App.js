@@ -31,7 +31,7 @@ function useRoute(isAuth) {
     );
      
   } return (
-    <Tab.Navigator initialRouteName='HorseRouts' screenOptions={{
+    <Tab.Navigator initialRouteName='SportRouts' screenOptions={{
       tabBarShowLabel: false,
       headerShown: false
     }} >

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Modal,Button,ScrollView,View, Text, SafeAreaView, TouchableOpacity, ImageBackground, StyleSheet, TextInput, Image } from "react-native";
+import { Modal,Button,ScrollView,View, Text, SafeAreaView, TouchableOpacity, ImageBackground, StyleSheet, TextInput, Image,KeyboardAvoidingView } from "react-native";
 
 import { uid } from 'uid';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
@@ -18,9 +19,49 @@ const CartsHomeScreen = ({ navigation }) => {
     
     const [photo, setPhoto] = useState(null);
     console.log(winningcombination)
+    ////////////////////////////////////////////////////////
+    useEffect(() => {
+        getData(); // Витягнути дані під час завантаження компонента
+    }, []);
     
 
+    useEffect(() => {
+        saveData(); // Запис даних у AsyncStorage при зміні bankName, info або photo
+    }, [allData, photo]);
 
+    // Функція для збереження даних у AsyncStorage
+    const saveData = async () => {
+        try {
+            const data = {
+                info: allData,
+                photo
+            };
+
+            const jsonData = JSON.stringify(data);
+            await AsyncStorage.setItem('cartData', jsonData);
+            console.log('Дані збережено AsyncStorage');
+        } catch (e) {
+            console.log('Помилка збереження даних:', e);
+        }
+    };
+
+    // Функція для отримання даних з AsyncStorage
+    const getData = async () => {
+        try {
+            const jsonData = await AsyncStorage.getItem('cartData');
+            if (jsonData !== null) {
+                const parsedData = JSON.parse(jsonData);
+                console.log('parsedData==>', parsedData);
+                setAllData(parsedData.info);
+                setPhoto(parsedData.photo);
+                console.log('Дані витягнуті з AsyncStorage');
+            }
+        } catch (error) {
+            console.error('Помилка отримання даних:', e);
+        }
+    };
+
+    ////////////////////////////////////////////////////////////
     const ImagePicer = () => {
         let options = {
             storageOptios: {
@@ -29,8 +70,13 @@ const CartsHomeScreen = ({ navigation }) => {
         };
         
         launchImageLibrary(options, response => {
-            console.log('response==>', response.assets[0].uri);
-            setPhoto(response.assets[0].uri)
+            if (!response.didCancel) {
+                console.log('response==>', response.assets[0].uri);
+                setPhoto(response.assets[0].uri)
+            } else {
+                console.log('Вибір скасовано');
+            }
+            
         })
     };
 
@@ -58,47 +104,50 @@ const CartsHomeScreen = ({ navigation }) => {
         console.log('newGame==>', newGame)
 
         setAllData([newGame, ...allData]);
-console.log('allData==>', allData)
+        console.log('allData==>', allData)
         modalClose();
     };
     
     //console.log(carts);
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
 
             <ImageBackground
                 source={require('../../acets/bkgr_photo.jpeg')}
                 style={styles.bgr}
             >
-
-                <View style={styles.contentCoteier}>
+                <KeyboardAvoidingView
+                    style={{ flex: 1 }}
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                >
+                    <View style={styles.contentCoteier}>
                
-                    <Text style={{ fontSize: 30, fontWeight: 'bold', marginBottom: 10, color: '#fff' }}>Cards Game: </Text>
+                        <Text style={{ fontSize: 30, fontWeight: 'bold', marginBottom: 10, color: '#fff' }}>Cards Game: </Text>
 
-                    <ScrollView>
+                        <ScrollView>
 
-                        {/**рендер карочних ігор у вигляді кнопок */}
-                        {allData.map((cart) => (
-                            <TouchableOpacity
-                                style={styles.gameBtn}
-                                onPress={() => navigation.navigate("CartDitailScreen", { game: cart })}
-                                key={cart.id}>
-                                <Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold', marginBottom: 5, }}>{cart.name}</Text>
+                            {/**рендер карочних ігор у вигляді кнопок */}
+                            {allData.map((cart) => (
+                                <TouchableOpacity
+                                    style={styles.gameBtn}
+                                    onPress={() => navigation.navigate("CartDitailScreen", { game: cart })}
+                                    key={cart.id}>
+                                    <Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold', marginBottom: 5, }}>{cart.name}</Text>
                                 
-                            </TouchableOpacity>
-                        ))}
+                                </TouchableOpacity>
+                            ))}
 
-                    </ScrollView>
+                        </ScrollView>
                     
-                    {/**BT Modal ope */}
-                    <TouchableOpacity
-                        onPress={toggleModal}
-                        style={{ position: 'absolute', borderColor: '#fff', right: 10, top: 25, width: 40,height: 40, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderRadius: 50 }}>
+                        {/**BT Modal ope */}
+                        <TouchableOpacity
+                            onPress={toggleModal}
+                            style={{ position: 'absolute', borderColor: '#fff', right: 10, top: 25, width: 40, height: 40, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderRadius: 50 }}>
                        
-                        <AntDesign name="plus" style={{ color: '#fff', fontSize: 35 }} />
-                    </TouchableOpacity>
-                </View>
-
+                            <AntDesign name="plus" style={{ color: '#fff', fontSize: 35 }} />
+                        </TouchableOpacity>
+                    </View>
+                </KeyboardAvoidingView>
                 {/**MADAL ADD GAME */}
                 <Modal
                     style={styles.modal}
@@ -142,29 +191,29 @@ console.log('allData==>', allData)
                                     <Image
                                         style={{ height: 200, width: '100%' }}
                                         source={{ uri: photo }} />
-                                ): (
+                                ) : (
                                     <TouchableOpacity
-                                    onPress={() =>  ImagePicer() }
-                                >
-                                    <MaterialIcons name="add-a-photo" style={{ color: '#fff', fontSize: 35 }}  />
-                                </TouchableOpacity>    
+                                        onPress={() => ImagePicer()}
+                                    >
+                                        <MaterialIcons name="add-a-photo" style={{ color: '#fff', fontSize: 35 }} />
+                                    </TouchableOpacity>
                                 )}
                                 
                             </View>
                             
                             {/**BT Modal add i modal ifo about game  <AntDesign name="closecircleo" style={{ color: '#fff', fontSize: 35 }} />*/}
-                            <View style={{marginTop: 20,flex: 1,alignItems: 'center', justifyContent: 'center'}}>
-                            <TouchableOpacity
-                                style={{borderWidth: 2,borderRadius: 25,borderColor:'#fff',paddingHorizontal: 10,paddingVertical:10, width:150,alignItems: 'center', justifyContent: 'center'}}
-                                onPress={addGame}
-                            >
-                                <Text style={{color: '#fff', fontWeight:'bold'}}>ADD GAME +</Text>
+                            <View style={{ marginTop: 20, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                                <TouchableOpacity
+                                    style={{ borderWidth: 2, borderRadius: 25, borderColor: '#fff', paddingHorizontal: 10, paddingVertical: 10, width: 150, alignItems: 'center', justifyContent: 'center' }}
+                                    onPress={addGame}
+                                >
+                                    <Text style={{ color: '#fff', fontWeight: 'bold' }}>ADD GAME +</Text>
                                 
-                            </TouchableOpacity></View>
+                                </TouchableOpacity></View>
 
                             {/**BT Modal close */}
                             <TouchableOpacity
-                                style={{position:'absolute', right: 5}}
+                                style={{ position: 'absolute', right: 5 }}
                                 onPress={modalClose}
                             >
                                 <AntDesign name="closecircleo" style={{ color: '#fff', fontSize: 35 }} />
@@ -177,19 +226,20 @@ console.log('allData==>', allData)
 
             </ImageBackground>
 
-        </View>
+        </SafeAreaView>
     );
 };
 
 export default CartsHomeScreen;
 
 const styles = StyleSheet.create({
-    container: {flex: 1,
+    container: {
+        flex: 1,
         //backgroundColor: 'skyblue',
         position: 'relative',
     },
     bgr: {
-         flex: 1,
+        flex: 1,
         resizeMode: "cover",
     },
     contentCoteier: {
@@ -219,12 +269,14 @@ const styles = StyleSheet.create({
     
     },
     modal: {
-        position: 'relative'
+        position: 'relative',
+        marginTop: 30
     },
     modalContent: {
         width: "100%", // Задайте ширину вікна за своїми потребами
         backgroundColor: '#000',
         padding: 20,
+        marginTop:30,
         borderRadius: 10,
         borderColor: '#fff',
         borderWidth: 2,
@@ -252,4 +304,4 @@ const styles = StyleSheet.create({
         marginTop: 5
 
     },
-})
+});

@@ -1,7 +1,8 @@
-import React,{useState} from "react";
-import {ScrollView, View,ImageBackground,StyleSheet, Text,TouchableOpacity, Alert, Modal, TextInput, Image, ScrollViewComponent } from "react-native";
+import React,{useState,useEffect} from "react";
+import {SafeAreaView,ScrollView, View,ImageBackground,StyleSheet, Text,TouchableOpacity, Alert, Modal, TextInput, Image, } from "react-native";
 
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import AntDesign from 'react-native-vector-icons/AntDesign'; 
 import Ionicons from 'react-native-vector-icons/Ionicons'; 
@@ -33,6 +34,54 @@ const SportHome = ({ navigation }) => {
 
     const [photo, setPhoto] = useState(null);
 
+
+    //////////////////////////////////////////////////////
+      useEffect(() => {
+        getData(); // Витягнути дані під час завантаження компонента
+    }, []);
+    
+
+    useEffect(() => {
+        saveData(); // Запис даних у AsyncStorage при зміні bankName, info або photo
+    }, [username, info, photo]);
+
+    // Функція для збереження даних у AsyncStorage
+    const saveData = async () => {
+            try {
+                const data = {
+                    username,
+                    info,
+                    photo
+                };
+
+                const jsonData = JSON.stringify(data);
+                await AsyncStorage.setItem('userData', jsonData);
+                console.log('Дані збережено AsyncStorage');
+            } catch (e) {
+                console.log('Помилка збереження даних:', e);
+            }
+    };
+
+    // Функція для отримання даних з AsyncStorage
+    const getData = async () => {
+        try {
+            const jsonData = await AsyncStorage.getItem('userData');
+            if (jsonData !== null) {
+                const parsedData = JSON.parse(jsonData);
+                console.log('parsedData==>', parsedData)
+                setUsername(parsedData.username);
+                setInfo(parsedData.info);
+                setPhoto(parsedData.photo);
+                console.log('Дані витягнуті з AsyncStorage');
+            }
+        } catch (error) {
+            console.error('Помилка отримання даних:', e);
+        }
+    };
+
+
+    //////////////////////////////////////////////////////
+
     const ImagePicer = () => {
         let options = {
             storageOptios: {
@@ -41,8 +90,13 @@ const SportHome = ({ navigation }) => {
         };
         
         launchImageLibrary(options, response => {
-            console.log('response==>', response.assets[0].uri);
-            setPhoto(response.assets[0].uri)
+            if (!response.didCancel) {
+                console.log('response==>', response.assets[0].uri);
+                setPhoto(response.assets[0].uri)
+            } else {
+                console.log('Вибір скасовано');
+            }
+            
         })
     };
 
@@ -76,7 +130,7 @@ const SportHome = ({ navigation }) => {
 
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             
             <ImageBackground
                 source={require('../../acets/bgr_sport.jpeg')}
@@ -128,7 +182,7 @@ const SportHome = ({ navigation }) => {
                 <TouchableOpacity
                     onPress={() => setIsModalVisible(true)}
                     style={{ position: 'absolute', right: 10, top: 30 }}>
-                    <MaterialCommunityIcons name='face-recognition' style={{ fontSize: 30, color: 'yellow' }} />
+                    <MaterialCommunityIcons name='face-recognition' style={{ fontSize: 30, color: '#fff' }} />
                 </TouchableOpacity>
 
                 {/** MODAL */}
@@ -167,7 +221,7 @@ const SportHome = ({ navigation }) => {
                                 <Text style={{ color: '#fff' }}>Add Photo</Text>
                             </TouchableOpacity>) : (
                                 <Image
-                                    style={{ width: 150, height: 150, borderRadius: 10 }}
+                                    style={{ width: 170, height: 170, borderRadius: 150 }}
                                     source={{ uri: photo }} />
                             )}
                             
@@ -203,7 +257,7 @@ const SportHome = ({ navigation }) => {
                 </Modal>
 
             </ImageBackground>
-        </View>
+        </SafeAreaView>
     );
 };
 

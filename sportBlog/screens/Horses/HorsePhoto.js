@@ -65,7 +65,7 @@ export const getImgs = (query, page) => {
                 return (
                     <Image
                         key={uid()}
-                        style={{...styles,width: imageWidth, height: imageWidth }}
+                        style={{...styles.image,width: imageWidth, height: imageWidth }}
                         source={{ uri: item.previewURL }} />
                 )
             })}
