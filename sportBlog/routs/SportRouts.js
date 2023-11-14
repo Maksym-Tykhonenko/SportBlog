@@ -6,10 +6,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
 import SportHome from "../screens/Sport/SportHome";
-import SportProfileScree from "../screens/Sport/SportProfile";
-import CalkSteps from "../screens/Sport/CalkSteps";
-import CalkCalorii from "../screens/Sport/CalkCalorii";
-import CalkCaloriiOnSteps from "../screens/Sport/CalkCaloriiOnSteps"; 
 
 
 {/** import React,{useState} from "react";
@@ -23,18 +19,13 @@ import CalkCaloriiOnSteps from "../screens/Sport/CalkCaloriiOnSteps";*/}
 
 
 const SportRouts = () => {
- 
-    
 
 
     return (
         <Stack.Navigator>
             
             <Stack.Screen options={{ headerShown: false }} name='SportHome' component={SportHome} />
-            <Stack.Screen options={{ headerShown: false }} name='SportProfileScree' component={SportProfileScree} />
             
-            <Stack.Screen options={{ headerShown: false }} name='CalkCalorii' component={CalkCalorii} />
-            <Stack.Screen options={{ headerShown: false }} name='CalkCaloriiOnSteps' component={CalkCaloriiOnSteps} />
         
         </Stack.Navigator>
     );

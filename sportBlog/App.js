@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState , useRef, useEffect} from 'react';
+import { Image, SafeAreaView, Text, TouchableOpacity, View, Animated } from 'react-native';
 
 import SportRouts from './routs/SportRouts';
 import HorseRouts from './routs/HorseRouts';
@@ -60,14 +60,76 @@ function useRoute(isAuth) {
 };
 
 const App = () => {
+  const rout = useRoute(true);
 
-  const rout = useRoute(true)
+  /////////////////////////////////////
+  const [loaderIsLoaded, setLoaderIsLoaded] = useState(false);
+  const ChangeInView = props => {
+        // const fadeAnim = useRef(new Animated.Image(require('../../acets/loader1.jpg'))).current;
+    
+        const fadeAnim = useRef(new Animated.Value(1)).current; // Initial value for opacity: 0 to 1
+        useEffect(() => {
+            Animated.timing(fadeAnim, {
+                toValue: 0,
+                duration: 6000,
+                useNativeDriver: true,
+            }).start();
+        }, []);
 
+        const appearingAnim = useRef(new Animated.Value(0)).current;// Initial value for opacity: 1 to 0
+        useEffect(() => {
+            Animated.timing(appearingAnim, {
+                toValue: 1,
+                duration: 5000,
+                useNativeDriver: true,
+            }).start();
+
+            setTimeout(() => {
+                setLoaderIsLoaded(true)
+            }, 7000);
+
+        }, []);
+
+        return (
+            <View style={{ position: 'relative', flex:1 }}>
+                <Animated.Image
+                    source={require('./acets/loader1.jpg')}// Special animatable View
+                    style={{
+                        ...props.style,
+                        opacity: fadeAnim,
+                        //width: 'auto',
+                        height: '100%'  // Bind opacity to animated value
+                    }} />
+                <Animated.Image
+                    source={require('./acets/loader2.jpg')}// Special animatable View
+                    style={{
+                        ...props.style,
+                        opacity: appearingAnim,
+                        //width: '100%',
+                        height: '100%',
+                        position: 'absolute'// Bind opacity to animated value
+                    }} />
+            </View>
+    
+        );
+    };
+  /////////////////////////////////////
   return (
 
     <NavigationContainer>
 
-      {rout }
+      {!loaderIsLoaded ? (
+           <ChangeInView
+                    style={{
+                        width: '100%',
+                        height: 50,
+                        backgroundColor: 'powderblue',
+                    }}>
+       
+                </ChangeInView>
+      ): (
+          rout
+      )}
       
     </NavigationContainer>
     

@@ -52,7 +52,7 @@ const CalkSteps = ({ navigation, name, rollUp, handleAddInfo }) => {
     };
 
     return (
-        <View style={{ flex: 1, marginTop: 20, marginBottom: 20, position: 'relative', backgroundColor: '#000', borderColor: '#fff', borderWidth: 2, borderRadius: 10, padding: 10 }}>
+        <View style={{ flex: 1, marginTop: 20, marginBottom: 20, position: 'relative', backgroundColor: '#4216b3', borderColor: '#fff', borderWidth: 2, borderRadius: 10, padding: 10 }}>
 
             <KeyboardAvoidingView
                 style={{flex:1}}

@@ -27,7 +27,7 @@ const CartDitailScreen = ({ navigation, route }) => {
         <View style={styles.container}>
 
             <ImageBackground
-                source={require('../../acets/bkgr_photo.jpeg')}
+                source={require('../../acets/backgr.jpg')}
                 style={styles.bgr}
             >
                 <View style={styles.contentCoteier}>

@@ -7,7 +7,7 @@ const HorsesHome = ({navigation}) => {
         <SafeAreaView style={styles.container}>
 
             <ImageBackground
-                source={require('../../acets/bgr_horse.png')}
+                source={require('../../acets/backgr.jpg')}
                 style={styles.bgr}
             >
                 <View style={{ flex:1,alignItems: 'center',justifyContent: 'center'}}>

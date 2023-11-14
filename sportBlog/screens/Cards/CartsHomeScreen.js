@@ -113,7 +113,7 @@ const CartsHomeScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
 
             <ImageBackground
-                source={require('../../acets/bkgr_photo.jpeg')}
+                source={require('../../acets/backgr.jpg')}
                 style={styles.bgr}
             >
                 <KeyboardAvoidingView
@@ -122,7 +122,7 @@ const CartsHomeScreen = ({ navigation }) => {
                 >
                     <View style={styles.contentCoteier}>
                
-                        <Text style={{ fontSize: 30, fontWeight: 'bold', marginBottom: 10, color: '#fff' }}>Cards Game: </Text>
+                        <Text style={{ fontSize: 30, fontWeight: 'bold', marginBottom: 10,marginTop: 5, color: '#fff' }}>Cards & Casino Game: </Text>
 
                         <ScrollView>
 
@@ -142,12 +142,13 @@ const CartsHomeScreen = ({ navigation }) => {
                         {/**BT Modal ope */}
                         <TouchableOpacity
                             onPress={toggleModal}
-                            style={{ position: 'absolute', borderColor: '#fff', right: 10, top: 25, width: 40, height: 40, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderRadius: 50 }}>
+                            style={{ position: 'absolute', borderColor: '#fff', right: 10, top: 8, width: 40, height: 40, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderRadius: 50 }}>
                        
                             <AntDesign name="plus" style={{ color: '#fff', fontSize: 35 }} />
                         </TouchableOpacity>
                     </View>
                 </KeyboardAvoidingView>
+                
                 {/**MADAL ADD GAME */}
                 <Modal
                     style={styles.modal}
@@ -274,7 +275,7 @@ const styles = StyleSheet.create({
     },
     modalContent: {
         width: "100%", // Задайте ширину вікна за своїми потребами
-        backgroundColor: '#000',
+        backgroundColor: '#2f197b',
         padding: 20,
         marginTop:30,
         borderRadius: 10,
