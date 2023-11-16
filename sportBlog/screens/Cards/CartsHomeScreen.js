@@ -110,7 +110,7 @@ const CartsHomeScreen = ({ navigation }) => {
     
     //console.log(carts);
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
 
             <ImageBackground
                 source={require('../../acets/backgr.jpg')}
@@ -122,7 +122,7 @@ const CartsHomeScreen = ({ navigation }) => {
                 >
                     <View style={styles.contentCoteier}>
                
-                        <Text style={{ fontSize: 30, fontWeight: 'bold', marginBottom: 10,marginTop: 5, color: '#fff' }}>Cards & Casino Game: </Text>
+                        <Text style={{ fontSize: 30, fontWeight: 'bold', marginBottom: 10, marginTop: 5, color: '#fff' }}>Cards & Casino Game: </Text>
 
                         <ScrollView>
 
@@ -142,8 +142,8 @@ const CartsHomeScreen = ({ navigation }) => {
                         {/**BT Modal ope */}
                         <TouchableOpacity
                             onPress={toggleModal}
-                            style={{ position: 'absolute', borderColor: '#fff', right: 10, top: 8, width: 40, height: 40, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderRadius: 50 }}>
-                       
+                            style={{ position: 'absolute', borderColor: '#fff', right: 0, top: 30, width: 40, height: 40, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderRadius: 50 }}
+                        >
                             <AntDesign name="plus" style={{ color: '#fff', fontSize: 35 }} />
                         </TouchableOpacity>
                     </View>
@@ -227,7 +227,7 @@ const CartsHomeScreen = ({ navigation }) => {
 
             </ImageBackground>
 
-        </SafeAreaView>
+        </View>
     );
 };
 
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     contentCoteier: {
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: 40,
+        paddingTop: 50,
         marginHorizontal: 20
         
     },

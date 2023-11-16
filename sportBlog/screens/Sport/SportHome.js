@@ -181,7 +181,7 @@ const SportHome = ({ navigation }) => {
 
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
 
                 <ImageBackground
                     source={require('../../acets/backgr.jpg')}
@@ -232,7 +232,7 @@ const SportHome = ({ navigation }) => {
                     {/**GO to profil */}
                     <TouchableOpacity
                         onPress={() => setIsModalVisible(true)}
-                        style={{ position: 'absolute', right: 10, top: 30 }}>
+                        style={{ position: 'absolute', right: 10, top: 40 }}>
                         <MaterialCommunityIcons name='face-recognition' style={{ fontSize: 30, color: '#fff' }} />
                     </TouchableOpacity>
 
@@ -308,13 +308,8 @@ const SportHome = ({ navigation }) => {
                     </Modal>
 
                 </ImageBackground>
-            
 
-            
-            
-
-
-        </SafeAreaView>
+        </View>
     );
 };
 
@@ -335,7 +330,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 50,
+        marginTop: 60,
         position: 'relative',
     },
     bt: {

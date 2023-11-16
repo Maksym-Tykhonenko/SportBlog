@@ -37,21 +37,31 @@ function useRoute(isAuth) {
     }} >
       
       <Tab.Screen name="SportRouts" component={SportRouts} options={{
+        tabBarActiveBackgroundColor: '#008d15',
+        tabBarInactiveBackgroundColor: '#08026b',
         tabBarIcon: ({ focused }) => {
           return (
-            <MaterialIcons name="sports-gymnastics" style={{ color: focused ? '#00D9FF' : 'grey', fontSize: 35 }} />)
+            <MaterialIcons name="sports-gymnastics" style={{ color: focused ? '#fef8d9' : '#fef8d9', fontSize: 35,
+              
+            }} />)
         }
       }} />
       <Tab.Screen name="HorseRouts" component={HorseRouts} options={{
+        tabBarActiveBackgroundColor: '#008d15',
+        tabBarInactiveBackgroundColor: '#08026b',
+        
         tabBarIcon: ({ focused }) => {
           return (
-            <FontAwesome5 name="horse-head" style={{ color: focused ? '#00D9FF' : 'grey', fontSize: 35 }} />)
+            <FontAwesome5 name="horse-head" style={{ color: focused ? '#fef8d9' : '#fef8d9', fontSize: 35 }} />)
         }
       }} />
       <Tab.Screen name="CardsRouts" component={CardsRouts} options={{
+        tabBarActiveBackgroundColor: '#008d15',
+        tabBarInactiveBackgroundColor: '#08026b',
+        
         tabBarIcon: ({ focused }) => {
           return (
-            <MaterialCommunityIcons name="cards" style={{ color: focused ? '#00D9FF' : 'grey', fontSize: 35 }} />)
+            <MaterialCommunityIcons name="cards" style={{ color: focused ? '#fef8d9' : '#fef8d9', fontSize: 35 }} />)
         }
       }} />
 

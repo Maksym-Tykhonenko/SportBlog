@@ -4,7 +4,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 const HorsesHome = ({navigation}) => {
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
 
             <ImageBackground
                 source={require('../../acets/backgr.jpg')}
@@ -25,7 +25,8 @@ const HorsesHome = ({navigation}) => {
                 </View>
                 
             </ImageBackground>
-        </SafeAreaView>
+
+        </View>
     );
 };
 
