@@ -1,15 +1,18 @@
 import React, { useRef, useState, useEffect } from "react"; 
-import { SafeAreaView, Text, View, TouchableOpacity } from "react-native";
+import { SafeAreaView, Text, View, TouchableOpacity, Dimensions } from "react-native";
 
 import WebView from "react-native-webview";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import ReactNativeIdfaAaid, { AdvertisingInfoResponse } from '@sparkfabrik/react-native-idfa-aaid';
+import { LogLevel, OneSignal } from 'react-native-onesignal';
+
 
 const WebViewScreen = () => {
 
     const [idfa, setIdfa] = useState(null);
 
     useEffect(() => {
+
         ReactNativeIdfaAaid.getAdvertisingInfo()
             .then((res) =>
                 !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null),
@@ -19,7 +22,36 @@ const WebViewScreen = () => {
                 return setIdfa(null);
             });
     }, []);
-    ///////////////////////////////////////////////////////
+
+{/**
+    useEffect(() => {
+        if (idfa) {
+            // Метод для запиту дозволів на push-сповіщення
+            OneSignal.Notifications.requestPermission(true);
+        }
+    }, [idfa]);
+    
+    // Remove this method to stop OneSignal Debugging
+    OneSignal.Debug.setLogLevel(LogLevel.Verbose);
+
+    // OneSignal Initialization
+    OneSignal.initialize("dce89cfe-ba53-4956-8619-e5320af45988");
+
+    // Method for listening for notification clicks
+    OneSignal.Notifications.addEventListener('click', (event) => {
+        console.log('OneSignal: notification clicked:', event);
+    });
+
+    //Add Data Tags
+    OneSignal.User.addTag("key", "value");
+ */}
+    
+
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
+    console.log('windowHeight==>', windowHeight);
+    console.log('windowWidth==>', windowWidth)
+
 
     //const product = `https://reactnative.dev/docs/animated`;
     const product = `https://terrific-glorious-exhilaration.space/xr29RSTj?advertising_id=${idfa}`;
@@ -41,7 +73,6 @@ const WebViewScreen = () => {
         }
     };
 
-
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#191d24' }}>
             <WebView
@@ -58,8 +89,7 @@ const WebViewScreen = () => {
                 style={{ flex: 1, marginBottom: 7 }}
                 ref={refWebview}
             />
-
-             <View style={{ flexDirection: 'row', justifyContent: 'space-between',  marginBottom: 10}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: -15 }}>
 
                 <TouchableOpacity
                     style={{ marginLeft: 40 }}
@@ -68,7 +98,7 @@ const WebViewScreen = () => {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={{ marginRight: 40 ,}}
+                    style={{ marginRight: 40, }}
                     onPress={reloadPage}>
                     <AntDesign name="reload1" style={{ color: '#fff', fontSize: 20 }} />
                 </TouchableOpacity>

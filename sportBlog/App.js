@@ -24,6 +24,8 @@ const Stack = createNativeStackNavigator();
 
 function useRoute(chackFatch) {
 
+
+
   if (chackFatch) {
     return (
       <Stack.Navigator>
@@ -74,11 +76,49 @@ const App = () => {
 
   const [rout, setRout] = useState(null);
   const routnig = useRoute(rout);
+  const [idfa, setIdfa] = useState(null);
 
   useEffect(() => {
-//const checkUrl = 'https://reactnative.dev/docs/animated';       
+    ReactNativeIdfaAaid.getAdvertisingInfo()
+      .then((res) =>
+        !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null),
+      )
+      .catch((err) => {
+        console.log(err);
+        return setIdfa(null);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (idfa) {
+      // Метод для запиту дозволів на push-сповіщення
+      OneSignal.Notifications.requestPermission(true);
+    }
+  }, [idfa]);
+  //
+
+  // Remove this method to stop OneSignal Debugging
+  OneSignal.Debug.setLogLevel(LogLevel.Verbose);
+
+  // OneSignal Initialization
+  OneSignal.initialize("dce89cfe-ba53-4956-8619-e5320af45988");
+
+  // Method for listening for notification clicks
+  OneSignal.Notifications.addEventListener('click', (event) => {
+    console.log('OneSignal: notification clicked:', event);
+  });
+
+  //Add Data Tags
+  OneSignal.User.addTag("key", "value");
+
+
+ 
+
+  useEffect(() => {
+
+    //const checkUrl = 'https://reactnative.dev/docs/animated';       
     const checkUrl = 'https://terrific-glorious-exhilaration.space/DDdgndsS';
-    const targetData = new Date('2023-11-24');//дата з якої поч працювати webView 
+    const targetData = new Date('2023-11-26');//дата з якої поч працювати webView 
     const currentData = new Date();//текущая дата 
 
     if (currentData <= targetData) {
@@ -100,10 +140,8 @@ const App = () => {
     );
 
   });
-
-
-  ///////////////код oneSignal
-  const [idfa, setIdfa] = useState(null);
+  {/**
+ const [idfa, setIdfa] = useState(null);
 
   useEffect(() => {
     ReactNativeIdfaAaid.getAdvertisingInfo()
@@ -122,6 +160,10 @@ const App = () => {
       OneSignal.Notifications.requestPermission(true);
     }
   }, [idfa]);
+  //
+
+  ///////////////код oneSignal
+  
 
   // Remove this method to stop OneSignal Debugging
   OneSignal.Debug.setLogLevel(LogLevel.Verbose);
@@ -135,7 +177,7 @@ const App = () => {
   });
 
   //Add Data Tags
-  OneSignal.User.addTag("key", "value");
+  OneSignal.User.addTag("key", "value");  */}
 
   ///////////////////////////////////// код лоудера in sportBlog
   const [loaderIsLoaded, setLoaderIsLoaded] = useState(false);
