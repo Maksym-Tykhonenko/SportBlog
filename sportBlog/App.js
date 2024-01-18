@@ -24,8 +24,6 @@ const Stack = createNativeStackNavigator();
 
 function useRoute(chackFatch) {
 
-
-
   if (chackFatch) {
     return (
       <Stack.Navigator>
